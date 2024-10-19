@@ -21,39 +21,50 @@ int n;
 double dp[301][301][301];
 
 
-double f(int n3,int n2,int n1)
-{
-	if(n3==0 && n2== 0 &&  n1==0)return 0;
 
-	if(abs(dp[n3][n2][n1]+1)>1e-6)return dp[n3][n2][n1];
-
-
-double t= n1+n2+n3;
-
-double ans = n/t;
-
-if(n3)ans += (f(n3-1,n2+1,n1)*n3)/t;
-if(n2)ans += (f(n3,n2-1,n1+1)*n2)/t;
-if(n1)ans += (f(n3,n2,n1-1)*n1)/t;
-
-return dp[n3][n2][n1]=ans;
-
-
-}
 
 void solve()
 { 
 	cin>>n;
-	int n1=0,n2=0,n3=0;
+	int cnt[4]={0};
 	rep(i,1,n)
 	{
 		int x; cin>>x;
-		if(x==1)n1++;
-		else if(x==2)n2++;
-		else n3++;
+		cnt[x]++;
 	}
-	memset(dp,-1,sizeof(dp));
-	cout<<fixed<<setprecision(16)<<f(n3,n2,n1)<<endl;
+	
+	dp[0][0][0]=0.0;
+
+  for(int three=0;three<=n;three++)
+  {
+  	for(int two=0;two<=n;two++)
+  	{
+  		for(int one=0;one<=n;one++)
+  		{
+  			int zero = n- three-two-one;
+  			if(zero==n)continue;
+
+  			if(zero<0)continue;
+
+  			double val = 1.0;
+
+  			if(three>0)val+= ((1.0*three)/n)*dp[three-1][two+1][one];
+  			if(two>0)val+= ((1.0*two)/n)*dp[three][two-1][one+1];
+  			if(one>0)val+= ((1.0*one)/n)*dp[three][two][one-1]; 
+
+  			val = val/(1-1.0*zero/n);
+
+  			dp[three][two][one]= val;
+  		}
+  	}
+  }
+
+
+
+
+
+
+	cout<<fixed<<setprecision(16)<<dp[cnt[3]][cnt[2]][cnt[1]]<<endl;
 
 
 return;
