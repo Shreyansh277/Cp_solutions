@@ -17,24 +17,27 @@ typedef vector<int> vi;
 // Functions
 int _BinPow(int a,int b,int m){int ans =1;while(b){if(b%2){ans=(ans*a)%m;}a=(a*a)%m;b/=2;}return ans;}
 
-int const N=1e6+10;
-int n;
-int dp[N];
+int const N=1e5+10;
+int n,x;
+int dp[N],h[1001],s[1001];
 
 
 void solve()
 {
-cin>>n;
-
+cin>>n>>x;
+rep(i,1,n)cin>>h[i];
+rep(i,1,n)cin>>s[i];
 
 rep(i,1,n)
 {
-	dp[i]=1e18;
-	int t=i;while(t){dp[i]=min(dp[i],dp[i-t%10]+1); t/=10;}
+	repr(j,x,0)
+	{
+		if(j-h[i]>=0)dp[j]= max(dp[j],dp[j-h[i]]+s[i]);
+	}
 }
 
-cout<<dp[n]<<endl;
 
+cout<<dp[x]<<endl;
 }
 
 
