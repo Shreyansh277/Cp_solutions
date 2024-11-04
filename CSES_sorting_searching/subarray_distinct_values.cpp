@@ -17,48 +17,37 @@ typedef vector<int> vi;
 // Functions
 int _BinPow(int a,int b,int m){int ans =1;while(b){if(b%2){ans=(ans*a)%m;}a=(a*a)%m;b/=2;}return ans;}
 
-int n,x;
-int dp[1000001][101];
-int a[101];
 
-int f(int l,int i)
-{
-	if(l==0)return 1;
-	if(i==n+1)return 0;
-	if(dp[l][i]!=-1)return dp[l][i];
-
-	int ans =0;
-  
-  if(l-a[i]>=0)ans = f(l-a[i],i);
-  ans += f(l,i+1);
-
-return dp[l][i]= ans%mod;
-}
 
 
 
 void solve()
-{ 
- cin>>n>>x;
- rep(i,1,n){cin>>a[i];}
- memset(dp,-1,sizeof(dp));
-
-
+{
  
+int n,k; cin>>n>>k; vector<int> a(n); rep(i,0,n-1)cin>>a[i];
+map<int,int>mp;
 
-int ans = f(x,1);
-// if(ans==inf)ans=-1;
+int ans=0,l=0,t=0;
 
-cout<<ans<<endl;
+rep(r,0,n-1)
+{
+	mp[a[r]]++;
+	if(mp[a[r]]==1)t++;
+	while(t>k)
+	{
+		mp[a[l]]--;
+		if(mp[a[l]]==0)t--;
+		l++;
 
+	}
+	ans+= r-l+1;
 
-
-return;
 }
 
 
+cout<<ans<<endl;
 
-
+}
 
 
 
@@ -66,7 +55,6 @@ int32_t main(){
   ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 	int _T=1; 
 	// cin>>_T;
-
   while(_T--)solve();
   return 0;  
 }
