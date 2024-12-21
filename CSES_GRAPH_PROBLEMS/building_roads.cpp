@@ -18,43 +18,50 @@ typedef vector<int> vi;
 int _BinPow(int a,int b,int m){int ans =1;while(b){if(b%2){ans=(ans*a)%m;}a=(a*a)%m;b/=2;}return ans;}
 
 
+// graph algorithms 
+// counting rooms 
 
-// Program showing a policy-based data structure.
-#include <ext/pb_ds/assoc_container.hpp> // Common file
-#include <ext/pb_ds/tree_policy.hpp>
-#include <functional> // for less
-#include <iostream>
-using namespace __gnu_pbds;
-using namespace std;
- 
-// a new data structure defined. Please refer below
-// GNU link : https://goo.gl/WVDL6g
-typedef tree<int, null_type, less<int>, rb_tree_tag,
-             tree_order_statistics_node_update>
-    ordered_set;
+int n,m;
+vector<vector<int>>g;
+vector<int> color;
 
+void dfs(int i)
+{
+	color[i]=1;
+	for(auto z: g[i])
+	{
+		if(color[z]==0)dfs(z);
+	}
 
-
-// joesphus problem 2
+	color[i]=2;
+	return;
+}
 
 void solve()
 {
-int n,k; cin>>n>>k; 
+cin>>n>>m;
 
-ordered_set st;
-rep(i,1,n)st.insert(i);
+g.resize(n+1);
+color.assign(n+1,0);
+rep(i,1,m)
+{
+	int a,b; cin>>a>>b; 
+	g[a].pb(b);
+	g[b].pb(a);
+} 
 
-int pos =0;
+vector<int> ans;
 
 rep(i,1,n)
 {
-	pos= (pos+k)%(n+1-i);
-  
-  int t = *st.find_by_order(pos);
-  cout<<t<<" ";
-  st.erase(t);
+	if(color[i]==0){dfs(i); ans.pb(i);}
+}
 
 
+cout<<ans.size()-1<<endl;
+rep(i,1,ans.size()-1)
+{
+	cout<<ans[0]<<" "<<ans[i]<<endl;
 }
 
 return;
